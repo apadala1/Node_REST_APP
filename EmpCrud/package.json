@@ -1,18 +1,13 @@
 {
-  "name": "empcrud",
-  "version": "1.0.0",
-  "description": "Take Home APPlictaion ",
-  "main": "fireApp.js",
+  "name": "takehomerest",
+  "version": "0.0.1",
+  "private": true,
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app"
   },
   "author": "Akhileshwar Padala",
-  "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
-    "morgan": "^1.9.1",
-    "request": "^2.88.0"
   }
 }
