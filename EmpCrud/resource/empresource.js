@@ -7,11 +7,7 @@ var DataBase = {
 };
 var empid = 1;
 // empDB CRUD operations 
-
-
 var empcrud = function () {};
-
-
 /* helper functions. */
 function getindex(id) {
 	for (var i = 0; i < DataBase.emp.length; i++) {
@@ -103,7 +99,7 @@ empcrud.prototype.createRecord = function (req, callback) {
 			"id": "numeric index",
 			"firstName": "firstname",
 			"lastName": "lastname",
-			"hiredate": "YYYY-MM-DD",
+			"hireDate": "YYYY-MM-DD",
 			"role": "CEO",
 			"favoriteQuote": "external api data",
 			"SecondfavoriteQuote": "external api data"
@@ -114,7 +110,7 @@ empcrud.prototype.createRecord = function (req, callback) {
 		DataBase.emp[index].id = empid;
 		DataBase.emp[index].firstName = req.body.firstName;
 		DataBase.emp[index].lastName = req.body.lastName;
-		DataBase.emp[index].hiredate = req.body.hireDate;
+		DataBase.emp[index].hireDate = req.body.hireDate;
 		DataBase.emp[index].role = req.body.role;
 		/* handler for adding First Favotare quote*/
 		getData(quoteUrl1, function (result) {
@@ -149,7 +145,7 @@ empcrud.prototype.createRecord = function (req, callback) {
 /*retrive record by id */
 empcrud.prototype.add = function (id, callback) {
 
-	if (DataBase.emp.length >= id && id != 0) {
+	if (id != 0 && DataBase.emp[getindex(id)]) {
 
 		callback(null, DataBase.emp[getindex(id)]);
 	} else {
@@ -157,10 +153,6 @@ empcrud.prototype.add = function (id, callback) {
 	}
 };
 
-empcrud.prototype.DBlength = function () {
-	console.log(DataBase.emp.length);
-	return DataBase.emp.length;
-};
 
 empcrud.prototype.getAll = function (callback) {
 	if (DataBase.emp.length <= 0) {
@@ -173,14 +165,47 @@ empcrud.prototype.getAll = function (callback) {
 
 empcrud.prototype.Update = function (req, callback) {
 
+	var error = "reason:";
+	if (DataBase.emp[getindex(req.params.id)]) {
+		var index = getindex(req.params.id);
 
+		try {
+
+			if (req.body.firstName) {
+				nameValidator(req.body.firstName);
+				DataBase.emp[index].firstName = req.body.firstName;
+			}
+			if (req.body.lastName) {
+
+				nameValidator(req.body.lastName);
+				DataBase.emp[index].lastName = req.body.lastName;
+			}
+
+			if (req.body.hireDate) {
+				dateValidator(req.body.hireDate)
+				DataBase.emp[index].hireDate = req.body.hireDate;
+			}
+			if (req.body.role) {
+				roleValidator(req.body.role)
+				DataBase.emp[index].role = req.body.role;
+			}
+
+		} catch (err) {
+			console.log(err);
+			return callback("error ", null);
+		}
+
+		callback(null, "sucess");
+	}
+
+	return callback("no Content found with id", null);
 };
+
 
 empcrud.prototype.remove = function (id, callback) {
 	if (DataBase.emp[getindex(id)]) {
 		var delPosition = getindex(id);
 		var removed = DataBase.emp.splice(delPosition, 1);
-		console.log(removed);
 		return callback(null, "Employee record deleted");
 	}
 

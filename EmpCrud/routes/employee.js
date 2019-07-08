@@ -60,10 +60,15 @@ router.delete('/:id', function (req, res) {
 });
 
 /* handler for PUT request with ID */
-router.put('/:id',function(req,res){
-	console.log(req.params.id);
-	console.log(req.body.firstName);
-	res.send("khil");
+router.put('/:id', function (req, res) {
+
+	emp.Update(req, function (err, result) {
+
+		if (err) {
+			return res.status(500).send(err);
+		}
+		return res.status(202).send(result);
+	});
 });
 
 module.exports = router;
